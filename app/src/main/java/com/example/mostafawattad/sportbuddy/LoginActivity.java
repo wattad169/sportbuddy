@@ -65,6 +65,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     /**
      * Id to identity READ_CONTACTS permission request.
      */
+    private static final String TAG = "AuthenticatorActivity";
     private static final int REQUEST_READ_CONTACTS = 0;
 
     /**
@@ -74,6 +75,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "mostafa@sportbuddy.com:hello", "idan@sportbuddy.com:hello,","leena@sportbuddy.com:hello","yarden@sportbuddy.com:hello"
     };
+
+    private String mEmail;
+    private String mPassword;
+
+
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -214,7 +220,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
+            mAuthTask = new UserLoginTask();
             mAuthTask.execute((Void) null);
         }
     }
@@ -347,6 +353,89 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             addEmailsToAutoComplete(emailAddressCollection);
         }
     }
+    /**
+     * Called when response is received from the server for confirm credentials
+     * request. See onAuthenticationResult(). Sets the
+     * AccountAuthenticatorResult which is sent back to the caller.
+     *
+     * @param result the confirmCredentials result.
+     */
+//    private void finishConfirmCredentials(boolean result) {
+//        Log.i(TAG, "finishConfirmCredentials()");
+//        final Account account = new Account(mEmail, Constants.ACCOUNT_TYPE);
+//        mAccountManager.setPassword(account, mPassword);
+//        final Intent intent = new Intent();
+//        intent.putExtra(AccountManager.KEY_BOOLEAN_RESULT, result);
+//        setAccountAuthenticatorResult(intent.getExtras());
+//        setResult(RESULT_OK, intent);
+//        finish();
+//    }
+    /**
+     * Called when response is received from the server for authentication
+     * request. See onAuthenticationResult(). Sets the
+     * AccountAuthenticatorResult which is sent back to the caller. We store the
+     * authToken that's returned from the server as the 'password' for this
+     * account - so we're never storing the user's actual password locally.
+     *
+     * @param result the confirmCredentials result.
+     */
+//    private void finishLogin(String authToken) {
+//        Log.i(TAG, "finishLogin()");
+//        final Account account = new Account(mEmail, Constants.ACCOUNT_TYPE);
+//        if (mRequestNewAccount) {
+//            mAccountManager.addAccountExplicitly(account, mPassword, null);
+//            // Set contacts sync for this account.
+//            ContentResolver.setSyncAutomatically(account, ContactsContract.AUTHORITY, true);
+//        } else {
+//            mAccountManager.setPassword(account, mPassword);
+//        }
+//        final Intent intent = new Intent();
+//        intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, mEmail);
+//        intent.putExtra(AccountManager.KEY_ACCOUNT_TYPE, Constants.ACCOUNT_TYPE);
+//        setAccountAuthenticatorResult(intent.getExtras());
+//        setResult(RESULT_OK, intent);
+//        finish();
+//    }
+    /**
+     * Called when the authentication process completes (see attemptLogin()).
+     *
+     * @param authToken the authentication token returned by the server, or NULL if
+     *            authentication failed.
+     */
+//    public void onAuthenticationResult(String authToken) {
+//        boolean success = ((authToken != null) && (authToken.length() > 0));
+//        Log.i(TAG, "onAuthenticationResult(" + success + ")");
+//        // Our task is complete, so clear it out
+//        mAuthTask = null;
+//        // Hide the progress dialog
+//        hideProgress();
+//        if (success) {
+//            if (!mConfirmCredentials) {
+//                finishLogin(authToken);
+//            } else {
+//                finishConfirmCredentials(success);
+//            }
+//        } else {
+//            Log.e(TAG, "onAuthenticationResult: failed to authenticate");
+//            if (mRequestNewAccount) {
+//                // "Please enter a valid username/password.
+//                mMessage.setText(getText(R.string.login_activity_loginfail_text_both));
+//            } else {
+//                // "Please enter a valid password." (Used when the
+//                // account is already in the database but the password
+//                // doesn't work.)
+//                mMessage.setText(getText(R.string.login_activity_loginfail_text_pwonly));
+//            }
+//        }
+//    }
+//    public void onAuthenticationCancel() {
+//        Log.i(TAG, "onAuthenticationCancel()");
+//        // Our task is complete, so clear it out
+//        mAuthTask = null;
+//        // Hide the progress dialog
+//        hideProgress();
+//    }
+
 
     /**
      * Represents an asynchronous login/registration task used to authenticate
@@ -354,13 +443,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     public class UserLoginTask extends AsyncTask<Void, Void, String> {
 
-        private final String mEmail;
-        private final String mPassword;
-
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-        }
 
         @Override
         protected String doInBackground(Void... params) {
@@ -368,27 +450,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             try {
                 // Simulate network access.
                 return NetworkUtilities.authenticate(mEmail, mPassword);
-            }
-
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 Log.e(TAG, "UserLoginTask.doInBackground: failed to authenticate");
                 Log.i(TAG, ex.toString());
                 return null;
+            }
         }
 
 
-
         @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                finish();
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
+        protected void onPostExecute(final String authToken) {
+//            onAuthenticationResult(authToken);
+            Log.i(TAG,authToken);
         }
 
         @Override

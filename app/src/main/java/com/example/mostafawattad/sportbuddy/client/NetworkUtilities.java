@@ -69,9 +69,9 @@ final public class NetworkUtilities {
     /** Timeout (in ms) we specify for each http request */
     public static final int HTTP_REQUEST_TIMEOUT_MS = 30 * 1000;
     /** Base URL for the v2 Sample Sync Service */
-    public static final String BASE_URL = "https://sportbuddy.appspot.com";
+    public static final String BASE_URL = "https://sportbuddy-1261.appspot.com";
     /** URI for authentication service */
-    public static final String AUTH_URI = BASE_URL + "/login";
+    public static final String AUTH_URI = BASE_URL + "/login/";
     /** URI for sync service */
     public static final String SYNC_CONTACTS_URI = BASE_URL + "/sync";
     private NetworkUtilities() {
