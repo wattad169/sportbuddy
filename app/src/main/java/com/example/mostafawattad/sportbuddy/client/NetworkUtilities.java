@@ -17,6 +17,7 @@
 package com.example.mostafawattad.sportbuddy.client;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
@@ -57,7 +58,7 @@ final public class NetworkUtilities {
     /** The tag used to log to adb console. */
     private static final String TAG = "NetworkUtilities";
     /** POST parameter name for the user's account name */
-    public static final String PARAM_USERNAME = "username";
+    public static final String PARAM_USERNAME = "user_name";
     /** POST parameter name for the user's password */
     public static final String PARAM_PASSWORD = "password";
     /** POST parameter name for the user's authentication token */
@@ -69,7 +70,7 @@ final public class NetworkUtilities {
     /** Timeout (in ms) we specify for each http request */
     public static final int HTTP_REQUEST_TIMEOUT_MS = 30 * 1000;
     /** Base URL for the v2 Sample Sync Service */
-    public static final String BASE_URL = "https://sportbuddy-1261.appspot.com";
+    public static final String BASE_URL = "http://10.0.2.2:8000";
     /** URI for authentication service */
     public static final String AUTH_URI = BASE_URL + "/login/";
     /** URI for sync service */
@@ -97,20 +98,40 @@ final public class NetworkUtilities {
      */
     public static String authenticate(String username, String password) {
         final HttpResponse resp;
-        final ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair(PARAM_USERNAME, username));
-        params.add(new BasicNameValuePair(PARAM_PASSWORD, password));
-        final HttpEntity entity;
+        Log.i(TAG,username);
+        JSONObject cred = new JSONObject();
         try {
-            entity = new UrlEncodedFormEntity(params);
-        } catch (final UnsupportedEncodingException e) {
-            // this should never happen.
-            throw new IllegalStateException(e);
+            cred.put(PARAM_USERNAME, username);
+        } catch (JSONException e) {
+            Log.i(TAG,e.toString());
         }
+        try {
+            cred.put(PARAM_PASSWORD, password);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.i(TAG, cred.toString());
+        StringEntity params = null;
+        try {
+            params = new StringEntity(cred.toString());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+//        final ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+//        params.add(new BasicNameValuePair(PARAM_USERNAME, username));
+//        params.add(new BasicNameValuePair(PARAM_PASSWORD, password));
+        final HttpEntity entity;
+//        try {
+//            entity = new UrlEncodedFormEntity(params);
+//        } catch (final UnsupportedEncodingException e) {
+//            // this should never happen.
+//            throw new IllegalStateException(e);
+//        }
         Log.i(TAG, "Authenticating to: " + AUTH_URI);
         final HttpPost post = new HttpPost(AUTH_URI);
-        post.addHeader(entity.getContentType());
-        post.setEntity(entity);
+        post.addHeader("content-type", "application/json");
+        post.setEntity(params);
         try {
             resp = getHttpClient().execute(post);
             String authToken = null;
