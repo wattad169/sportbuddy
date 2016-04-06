@@ -52,8 +52,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 /**
- * Provides utility methods for communicating with the server.
+ * Provides utility methods for communicating with the server..
  */
+
 final public class NetworkUtilities {
     /** The tag used to log to adb console. */
     private static final String TAG = "NetworkUtilities";
