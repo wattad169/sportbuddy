@@ -453,7 +453,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 // Simulate network access.
                 return NetworkUtilities.authenticate(mEmail, mPassword);
             } catch (Exception ex) {
-                Log.e(TAG, "UserLoginTask.doInBackground: failed to authenticate");
+                Log.e(TAG, "UserLoginTaswattadk.doInBackground: failed to authenticate");
                 Log.i(TAG, ex.toString());
                 return null;
             }
@@ -463,6 +463,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected void onPostExecute(final String authToken) {
 //            onAuthenticationResult(authToken);
+            finish();
             Log.i(TAG,authToken);
         }
 
@@ -473,4 +474,3 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 }
-

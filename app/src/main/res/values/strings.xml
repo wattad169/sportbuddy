@@ -2,6 +2,8 @@
     <string name="app_name">sport buddy</string>
 
     <!-- Strings related to login -->
+    <string name="skip">skip</string>
+    <string name="done">Done</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>
     <string name="action_sign_in">Sign in or register</string>
@@ -13,4 +15,11 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="title_activity_main">SortableTableView Example</string>
+
+    <string name="default_text_ps">180PS</string>
+    <string name="separator">/</string>
+    <string name="default_text_kws">120kW</string>
+
+    <string name="car_producer_image_content_description">Car Producer</string>
 </resources>
