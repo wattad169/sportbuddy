@@ -22,4 +22,13 @@
     <string name="default_text_kws">120kW</string>
 
     <string name="car_producer_image_content_description">Car Producer</string>
+    <string name="title_activity_create_event_sc">CreateEventSc</string>
+    <string name="select_type">Type:</string>
+    <string name="action_settings">Settings</string>
+    <string-array name="sport_types">
+
+        <item>Basketball</item>
+        <item>Football</item>
+        <item>Running</item>
+    </string-array>
 </resources>

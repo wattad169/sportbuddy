@@ -22,6 +22,12 @@ public class Constants {
      */
     public static final String ACCOUNT_TYPE = "com.example.android.samplesync";
 
+    public static final String RESPONSE_STATUS = "status";
+
+    public static final String RESPONSE_OK = "OK";
+
+    public static final String RESPONSE_MESSAGE = "message";
+
     /**
      * Authtoken type string.
      */

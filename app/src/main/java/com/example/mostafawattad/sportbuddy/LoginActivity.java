@@ -1,6 +1,6 @@
 package com.example.mostafawattad.sportbuddy;
 import com.example.mostafawattad.sportbuddy.client.NetworkUtilities;
-
+import com.example.mostafawattad.sportbuddy.Constants;
 
 
 import android.animation.Animator;
@@ -52,6 +52,8 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 
@@ -65,6 +67,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     /**
      * Id to identity READ_CONTACTS permission request.
      */
+    public final static String LOGGEDUSERID = "loggedUserId";
     private static final String TAG = "AuthenticatorActivity";
     private static final int REQUEST_READ_CONTACTS = 0;
 
@@ -461,10 +464,43 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
 
         @Override
-        protected void onPostExecute(final String authToken) {
+        protected void onPostExecute(final String responseString) {
 //            onAuthenticationResult(authToken);
-            finish();
-            Log.i(TAG,authToken);
+            Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+            JSONObject myObject = null;
+            String responseStatus = null;
+            try {
+                myObject = new JSONObject(responseString);
+                responseStatus = myObject.getString(Constants.RESPONSE_STATUS);
+            } catch (JSONException e) {
+                Log.i(TAG, e.toString());
+                e.printStackTrace();
+            }
+
+            if(myObject!=null && responseStatus!=null){
+                if(responseStatus.equals(Constants.RESPONSE_OK.toString())){
+                    try {
+                        String userId = myObject.getString(Constants.RESPONSE_MESSAGE);
+                        intent.putExtra(LOGGEDUSERID,userId);
+                        startActivity(intent);
+                        Log.i(TAG, userId);
+
+                    } catch (JSONException e) {
+                        Log.i(TAG, e.toString());
+                        e.printStackTrace();
+                    }
+                }
+                else{
+                    //User or Password doesn't match .. Forgot password?
+                    Log.i(TAG, "User or Password doesn't match .. Forgot password");
+                }
+
+            }
+            else{
+                //Send HttpBadRequest to the server
+            }
+
+
         }
 
         @Override

@@ -135,18 +135,18 @@ final public class NetworkUtilities {
         post.setEntity(params);
         try {
             resp = getHttpClient().execute(post);
-            String authToken = null;
+            String resopnseString = null;
             if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 InputStream istream = (resp.getEntity() != null) ? resp.getEntity().getContent()
                         : null;
                 if (istream != null) {
                     BufferedReader ireader = new BufferedReader(new InputStreamReader(istream));
-                    authToken = ireader.readLine().trim();
+                    resopnseString = ireader.readLine().trim();
                 }
             }
-            if ((authToken != null) && (authToken.length() > 0)) {
+            if ((resopnseString != null) && (resopnseString.length() > 0)) {
                 Log.v(TAG, "Successful authentication");
-                return authToken;
+                return resopnseString;
             } else {
                 Log.e(TAG, "Error authenticating" + resp.getStatusLine());
                 return null;
