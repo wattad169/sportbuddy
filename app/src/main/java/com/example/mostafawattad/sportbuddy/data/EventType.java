@@ -4,12 +4,12 @@ package com.example.mostafawattad.sportbuddy.data;
 /**
  * Created by Ingo on 18.07.2015.
  */
-public class CarProducer {
+public class EventType {
 
     private final String name;
     private int logoRes;
 
-    public CarProducer(int logoRes, String name) {
+    public EventType(int logoRes, String name) {
         this.logoRes = logoRes;
         this.name = name;
     }

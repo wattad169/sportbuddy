@@ -1,6 +1,5 @@
 package com.example.mostafawattad.sportbuddy;
 import com.example.mostafawattad.sportbuddy.client.NetworkUtilities;
-import com.example.mostafawattad.sportbuddy.Constants;
 
 
 import android.animation.Animator;
@@ -33,24 +32,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
-import android.accounts.Account;
-import android.accounts.AccountAuthenticatorActivity;
-import android.accounts.AccountManager;
-import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.content.ContentResolver;
-import android.content.DialogInterface;
+
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Handler;
-import android.provider.ContactsContract;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
-import android.view.Window;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -421,7 +405,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 //                finishConfirmCredentials(success);
 //            }
 //        } else {
-//            Log.e(TAG, "onAuthenticationResult: failed to authenticate");
+//            Log.e(TAG, "onAuthenticationResult: failed to doPost");
 //            if (mRequestNewAccount) {
 //                // "Please enter a valid username/password.
 //                mMessage.setText(getText(R.string.login_activity_loginfail_text_both));
@@ -443,7 +427,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
 
     /**
-     * Represents an asynchronous login/registration task used to authenticate
+     * Represents an asynchronous login/registration task used to doPost
      * the user.
      */
     public class UserLoginTask extends AsyncTask<Void, Void, String> {
@@ -454,9 +438,21 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // TODO: attempt authentication against a network service.
             try {
                 // Simulate network access.
-                return NetworkUtilities.authenticate(mEmail, mPassword);
+                Log.i(TAG,mEmail);
+                JSONObject cred = new JSONObject();
+                try {
+                    cred.put(NetworkUtilities.PARAM_USERNAME, mEmail);
+                } catch (JSONException e) {
+                    Log.i(TAG,e.toString());
+                }
+                try {
+                    cred.put(NetworkUtilities.PARAM_PASSWORD, mPassword);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                return NetworkUtilities.doPost(cred, NetworkUtilities.BASE_URL + "/login/");
             } catch (Exception ex) {
-                Log.e(TAG, "UserLoginTaswattadk.doInBackground: failed to authenticate");
+                Log.e(TAG, "UserLoginTaswattadk.doInBackground: failed to doPost");
                 Log.i(TAG, ex.toString());
                 return null;
             }

@@ -76,6 +76,12 @@ final public class NetworkUtilities {
     public static final String AUTH_URI = BASE_URL + "/login/";
     /** URI for sync service */
     public static final String SYNC_CONTACTS_URI = BASE_URL + "/sync";
+
+    public static final String TOKEN = "token";
+
+    public static final String USER_ID = "user_id";
+
+
     private NetworkUtilities() {
     }
     /**
@@ -93,24 +99,11 @@ final public class NetworkUtilities {
      * Connects to the SampleSync test server, authenticates the provided
      * username and password.
      *
-     * @param username The server account username
-     * @param password The server account password
      * @return String The authentication token returned by the server (or null)
      */
-    public static String authenticate(String username, String password) {
+    public static String doPost(JSONObject cred, String apiUrl) {
         final HttpResponse resp;
-        Log.i(TAG,username);
-        JSONObject cred = new JSONObject();
-        try {
-            cred.put(PARAM_USERNAME, username);
-        } catch (JSONException e) {
-            Log.i(TAG,e.toString());
-        }
-        try {
-            cred.put(PARAM_PASSWORD, password);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
         Log.i(TAG, cred.toString());
         StringEntity params = null;
         try {
@@ -129,8 +122,8 @@ final public class NetworkUtilities {
 //            // this should never happen.
 //            throw new IllegalStateException(e);
 //        }
-        Log.i(TAG, "Authenticating to: " + AUTH_URI);
-        final HttpPost post = new HttpPost(AUTH_URI);
+        Log.i(TAG, "Authenticating to: " + apiUrl);
+        final HttpPost post = new HttpPost(apiUrl);
         post.addHeader("content-type", "application/json");
         post.setEntity(params);
         try {

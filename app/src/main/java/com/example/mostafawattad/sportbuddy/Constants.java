@@ -13,7 +13,10 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
+
 package com.example.mostafawattad.sportbuddy;
+import java.util.Map;
+import java.util.HashMap;
 
 public class Constants {
 
@@ -32,4 +35,27 @@ public class Constants {
      * Authtoken type string.
      */
     public static final String AUTHTOKEN_TYPE = "com.example.android.samplesync";
+
+    public static final String EVENT_TYPE = "type";
+
+    public static final String EVENT_DATE = "date";
+
+    public static final String EVENT_LOCATION = "formatted_location";
+
+    public static final String EVENT_MEMBERS = "members";
+
+    public static final String EVENT_NAME = "name";
+
+    static final Map<String , Integer> sportTypeToLogo = new HashMap<String , Integer>() {{
+        put("football", R.mipmap.football);
+        put("swimming", R.mipmap.swimming);
+        put("football", R.mipmap.football);
+        put("soccer", R.mipmap.soccer);
+        put("basketball", R.mipmap.basketball);
+        put("running", R.mipmap.running);
+        put("vollyball", R.mipmap.vollyball);
+        put("cycling", R.mipmap.cycling);
+        put("tenis", R.mipmap.tenis);
+    }};
+
 }

@@ -15,7 +15,7 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="title_activity_main">SortableTableView Example</string>
+    <string name="title_activity_main">Your Upcomming Events</string>
 
     <string name="default_text_ps">180PS</string>
     <string name="separator">/</string>

@@ -3,6 +3,7 @@
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_sc2"
     tools:context="com.example.mostafawattad.sportbuddy.myEventsActivity">
 
     <android.support.v7.widget.Toolbar
