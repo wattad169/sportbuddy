@@ -1,26 +1,32 @@
 package com.example.mostafawattad.sportbuddy;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.mostafawattad.sportbuddy.client.NetworkUtilities;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class EventInfo extends AppCompatActivity {
 
     public final static String LOGGEDUSERID = "loggedUserId";
     public final static String EVENTINFORM = "eventInform";
     Intent thisClass;
-    String userID;
+    private handleEventTask myEventsTask = null;
+    private String userID;
     private String[] detalis; /*idUser,name,type,date,time,location,members*/
     EditText NameEvenet;
     EditText TypeEvent;
@@ -28,6 +34,10 @@ public class EventInfo extends AppCompatActivity {
     EditText TimeEvent;
     EditText LocationEvent;
     EditText MembersEvent;
+    Button saveJoinBtn ;
+    private String TAG = "EventInfo";
+    private int parentMode;
+    private String event_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +48,22 @@ public class EventInfo extends AppCompatActivity {
 
         initFonts();
 
+        saveJoinBtn = (Button) findViewById(R.id.Save_btn);
         thisClass = getIntent();
+        //inputs
         userID = thisClass.getStringExtra(LOGGEDUSERID);
         detalis = thisClass.getStringArrayExtra(EVENTINFORM);
+        parentMode = thisClass.getIntExtra(Constants.parentActivityMode, 1);
+        if(parentMode == Constants.joinParentMode){
+            event_id = thisClass.getStringExtra(Constants.EVENT_ID);
+            saveJoinBtn.setText("Join");
+
+        }
+        if(parentMode == Constants.nonParentMode){
+            saveJoinBtn.setVisibility(Button.INVISIBLE);
+        }
+
+
 
         NameEvenet = (EditText) findViewById(R.id.Event_title);
         NameEvenet.setText(detalis[1]);
@@ -60,8 +83,6 @@ public class EventInfo extends AppCompatActivity {
         MembersEvent = (EditText) findViewById(R.id.membersTxt);
         MembersEvent.setText(detalis[6]);
 
-        Button EditBrn = (Button) findViewById(R.id.Edit_btn);
-        if(userID != detalis[0])  EditBrn.setVisibility(Button.INVISIBLE);
 
     }
     private void initFonts()
@@ -105,21 +126,139 @@ public class EventInfo extends AppCompatActivity {
 
         detalis[6] = String.valueOf(MembersEvent.getText());
 
+        myEventsTask = new handleEventTask(this);
+        myEventsTask.execute((Void) null);
+
     }
 
-    public void editOnClick(View v)
+    @Override
+    public void onBackPressed()
     {
-        NameEvenet.setFocusable(true);
-
-        TypeEvent.setFocusable(true);
-
-        DateEvent.setFocusable(true);
-
-        TimeEvent.setFocusable(true);
-
-        LocationEvent.setFocusable(true);
-
-        MembersEvent.setFocusable(true);
+        super.onBackPressed();
+        Intent next = new Intent(getApplication(),MainActivity.class);
+        next.putExtra(Constants.LOGGEDUSERID,userID);
+        startActivity(next);
+        finish();
     }
 
+
+    public class handleEventTask extends AsyncTask<Void, Void, String> {
+
+        //        private Context context;
+        private Context context;
+        public handleEventTask(EventInfo activity) {
+            this.activity = activity;
+            context = activity;
+            dialog = new ProgressDialog(context);
+        }
+
+        /** progress dialog to show user that the backup is processing. */
+        private ProgressDialog dialog;
+        /** application context. */
+        private EventInfo activity;
+        private String responseString;
+        protected void onPreExecute() {
+            this.dialog.setMessage("Handling your request..");
+            this.dialog.show();
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            // TODO: attempt authentication against a network service.
+
+                Log.i(TAG, "");
+                JSONObject cred = new JSONObject();
+
+                try {
+
+                    JSONObject innerCred = new JSONObject();
+                    innerCred.put(Constants.LOCATION_LON, 32.113378); //TODO : Fetch from GPS
+                    innerCred.put(Constants.LOCATION_LAT, 34.804860);
+
+                    cred.put(Constants.EVENT_LOCATION_CORD, innerCred);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if (parentMode == Constants.createParentMode) {
+                    try {
+                        cred.put(NetworkUtilities.TOKEN, userID);
+                    } catch (JSONException e) {
+                        Log.i(TAG, e.toString());
+                    }
+                    try {
+                        cred.put(Constants.EVENT_NAME, detalis[1]);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        cred.put(Constants.EVENT_TYPE, detalis[2]);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        cred.put(Constants.EVENT_DATE, detalis[3]);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    Log.i(TAG, "CreateEvent message to send :" + cred.toString());
+                    responseString = NetworkUtilities.doPost(cred, NetworkUtilities.BASE_URL + "/create_event/");
+                } else {
+                    try {
+                        cred.put(NetworkUtilities.TOKEN, userID);
+                    } catch (JSONException e) {
+                        Log.i(TAG, e.toString());
+                    }
+                    try {
+                        cred.put(Constants.EVENT_ID, event_id);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    Log.i(TAG, "JointEvent message to send :" + cred.toString());
+                    responseString = NetworkUtilities.doPost(cred, NetworkUtilities.BASE_URL + "/join_event/");
+                }
+
+                JSONObject myObject = null;
+                String responseStatus = null;
+                try {
+                    myObject = new JSONObject(responseString);
+                    responseStatus = myObject.getString(Constants.RESPONSE_STATUS);
+                } catch (JSONException e) {
+                    Log.i(TAG, e.toString());
+                    e.printStackTrace();
+                }
+                Log.i(TAG,"Received: " + responseString);
+                if (myObject != null && responseStatus != null) {
+                    if (responseStatus.equals(Constants.RESPONSE_OK.toString())) {
+                        myEventsTask = null;
+                        dialog.cancel();
+//                        Toast.makeText(context, "Done!", Toast.LENGTH_LONG).show();
+
+                    } else {
+                        //User or Password doesn't match .. Forgot password?
+//                    mAuthTask = null;
+//                    showProgress(false);
+                        myEventsTask = null;
+                        dialog.cancel();
+//                        Toast.makeText(context, "Failed!", Toast.LENGTH_LONG).show();
+
+                        Log.i(TAG, "Failed");
+                    }
+
+                }
+            return null;
+        }
+
+
+        @Override
+        protected void onPostExecute(final String responseString) {
+
+
+
+        }
+
+
+
+
+    }
 }

@@ -46,6 +46,16 @@ public class Constants {
 
     public static final String EVENT_NAME = "name";
 
+    public static final String EVENT_LOCATION_CORD = "location";
+
+    public static final String LOCATION_LAT = "lat";
+
+    public static final String LOCATION_LON = "lon";
+
+    public static final String EVENT_ID = "event_id";
+
+    public final static String EVENTINFORM = "eventInform";
+
     static final Map<String , Integer> sportTypeToLogo = new HashMap<String , Integer>() {{
         put("football", R.mipmap.football);
         put("swimming", R.mipmap.swimming);
@@ -62,5 +72,11 @@ public class Constants {
     public static final int myEventsMode = 1;
     public static final int allEventsMode = 2;
     public static final String eventsMode = "eventMode";
+    public static final String parentActivityMode = "parentActivityMode";
+    public static final int joinParentMode = 1;
+    public static final int createParentMode = 2;
+    public static final int nonParentMode = 3;
+
+    public static final String ID = "id";
 
 }

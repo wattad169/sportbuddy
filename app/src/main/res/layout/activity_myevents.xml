@@ -10,7 +10,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/primary"
+        android:background="#FF1F64"
         custom:title="@string/title_activity_main"
         custom:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
@@ -21,6 +21,6 @@
         android:layout_below="@id/toolbar"
         custom:columnCount="4"
         custom:headerElevation="10"
-        custom:headerColor="@color/primary" />
+        custom:headerColor="#FF1F64" />
 
 </RelativeLayout>

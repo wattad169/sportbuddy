@@ -28,8 +28,6 @@ import java.util.Locale;
 
 public class CreateEventSc extends AppCompatActivity {
 
-    public final static String LOGGEDUSERID = "loggedUserId";
-    public final static String EVENTINFORM = "eventInform";
     Intent thisClass;
     String userID;
 
@@ -55,7 +53,7 @@ public class CreateEventSc extends AppCompatActivity {
 
 
         thisClass = getIntent();
-        userID = thisClass.getStringExtra(LOGGEDUSERID);
+        userID = thisClass.getStringExtra(Constants.LOGGEDUSERID);
 
         dateTxt = (TextView) findViewById(R.id.dateText);
         dateTxt.setText(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
@@ -154,6 +152,15 @@ public class CreateEventSc extends AppCompatActivity {
         TextView dateView = (TextView)findViewById(R.id.date_title);
         dateView.setTypeface(myTypeFace);
 
+        TextView timeView = (TextView)findViewById(R.id.time_title);
+        timeView.setTypeface(myTypeFace);
+
+        TextView location_view = (TextView)findViewById(R.id.loc_Title);
+        location_view.setTypeface(myTypeFace);
+
+        TextView member_view = (TextView)findViewById(R.id.Members_title);
+        member_view.setTypeface(myTypeFace);
+
     }
 
     public void CreateOnClick(View v)
@@ -179,8 +186,9 @@ public class CreateEventSc extends AppCompatActivity {
 
 
         Intent intent = new Intent(getApplicationContext(),EventInfo.class);
-        intent.putExtra(EVENTINFORM,detalis);
-        intent.putExtra(LOGGEDUSERID,userID);
+        intent.putExtra(Constants.EVENTINFORM,detalis);
+        intent.putExtra(Constants.LOGGEDUSERID,userID);
+        intent.putExtra(Constants.parentActivityMode,Constants.createParentMode);
         startActivity(intent);
     }
 }

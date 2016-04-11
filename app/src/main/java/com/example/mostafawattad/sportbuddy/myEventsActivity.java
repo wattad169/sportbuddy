@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -60,15 +61,16 @@ public class myEventsActivity extends AppCompatActivity {
         final List<event> events = new ArrayList<>();
         for (int i=0; i < inputJson.length() ; i++){
             JSONObject currentEvent = (JSONObject) inputJson.get(i);
-            String event_type = currentEvent.getString(Constants.EVENT_TYPE);
+            String event_type = currentEvent.getString(Constants.EVENT_TYPE).toLowerCase();
             String event_name = currentEvent.getString(Constants.EVENT_NAME);
             String event_date = currentEvent.getString(Constants.EVENT_DATE);
             String event_location = currentEvent.getString(Constants.EVENT_LOCATION);
+            String event_id = currentEvent.getString(Constants.ID);
             int event_size = currentEvent.getJSONArray(Constants.EVENT_MEMBERS).length();
 
             Log.i(TAG, event_type);
             final EventType type = new EventType(Constants.sportTypeToLogo.get(event_type), event_type);
-            final event current_event = new event(type,event_name ,event_date,event_location,event_size, 150, 25000);
+            final event current_event = new event(type,event_name ,event_date,event_location,event_size, 150, 25000,event_id);
             events.add(current_event);
             }
 
@@ -78,11 +80,44 @@ public class myEventsActivity extends AppCompatActivity {
 
 
     private class CarClickListener implements TableDataClickListener<event> {
+        private String[] detalis = new String[7]; /*idUser,name,type,date,time,location,members*/
+
 
         @Override
         public void onDataClicked(final int rowIndex, final event clickedData) {
             final String carString = clickedData.getType().getName() + " " + clickedData.getName();
-            Toast.makeText(myEventsActivity.this, carString, Toast.LENGTH_SHORT).show();
+
+
+            detalis[0] = user_id;
+
+
+            detalis[1] = clickedData.getName();
+
+            detalis[2] = clickedData.getType().getName();
+
+            detalis[3] = clickedData.getDate();
+
+            detalis[4] = "";
+
+            detalis[5] = clickedData.getLocation();
+
+            detalis[6] = "2";
+
+
+            Intent intent = new Intent(getApplicationContext(),EventInfo.class);
+            intent.putExtra(Constants.EVENTINFORM,detalis);
+            intent.putExtra(Constants.LOGGEDUSERID,user_id);
+            int status_mode;
+            if(receivedEventsMode == Constants.allEventsMode){
+                status_mode = Constants.joinParentMode;
+            }
+            else{
+                status_mode = Constants.nonParentMode;
+            }
+            intent.putExtra(Constants.parentActivityMode,status_mode);
+            intent.putExtra(Constants.EVENT_ID,clickedData.getId());
+            startActivity(intent);
+
         }
     }
 
@@ -149,7 +184,8 @@ public class myEventsActivity extends AppCompatActivity {
                 myObject = new JSONObject(responseString);
                 responseStatus = myObject.getString(Constants.RESPONSE_STATUS);
                 message = myObject.getJSONArray(Constants.RESPONSE_MESSAGE);
-            } catch (JSONException e) {
+            } catch (JSONException e)
+            {
                 Log.i(TAG, e.toString());
                 e.printStackTrace();
             }
@@ -165,7 +201,7 @@ public class myEventsActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                     carTableView.addDataClickListener(new CarClickListener());
-                    Toast.makeText(context, "OK", Toast.LENGTH_LONG).show();
+
                     if (dialog.isShowing()) {
                         dialog.dismiss();
                     }

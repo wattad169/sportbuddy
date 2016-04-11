@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
     public void joinClick(View v)
     {
         myEventsTask = new getUserEventsTask(this,Constants.allEventsMode);
+        v.setBackgroundColor(0xAD1F2D);
         myEventsTask.execute((Void) null);
     }
 
@@ -75,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(getApplicationContext(), CreateEventSc.class);
         intent.putExtra(Constants.LOGGEDUSERID,usrid);
+        intent.putExtra(Constants.parentActivityMode,Constants.createParentMode);
+        v.setBackgroundColor(0xAD1F2D);
         startActivity(intent);
     }
 
@@ -83,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
 //        Uri uri = Uri.parse("http://www.walla.com");
 //        showProgress(true);
         myEventsTask = new getUserEventsTask(this,Constants.myEventsMode);
+        v.setBackgroundColor(0xAD1F2D);
         myEventsTask.execute((Void) null);
 
 
@@ -171,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(final String responseString) {
 //            onAuthenticationResult(authToken);
             dialog.cancel();
-            Toast.makeText(context, "OK", Toast.LENGTH_LONG).show();
+
         }
 
 

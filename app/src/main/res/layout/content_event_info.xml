@@ -109,10 +109,12 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:id="@+id/locationTxt"
-        android:layout_alignBottom="@+id/Location_title"
-        android:layout_centerHorizontal="true"
         android:text="wwss"
-        android:editable="false"/>
+        android:editable="false"
+        android:textAlignment="center"
+        android:layout_above="@+id/Members_title"
+        android:layout_toRightOf="@+id/Save_btn"
+        android:layout_toEndOf="@+id/Save_btn" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -140,37 +142,13 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Edit"
-        android:id="@+id/Edit_btn"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:background="@drawable/button_rounded_corners" />
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="Save"
         android:id="@+id/Save_btn"
-        android:allowUndo="false"
         android:background="@drawable/button_rounded_corners"
+        android:layout_marginTop="70dp"
         android:layout_below="@+id/membersTxt"
-        android:layout_toRightOf="@+id/membersTxt"
-        android:layout_toEndOf="@+id/membersTxt"
-        android:layout_marginLeft="56dp"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="67dp" />
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Delete"
-        android:id="@+id/Delete_btn"
-        android:background="@drawable/button_rounded_corners"
-        android:layout_alignTop="@+id/Save_btn"
-        android:layout_toRightOf="@+id/Location_title"
-        android:layout_toEndOf="@+id/Location_title" />
+        android:layout_alignLeft="@+id/membersTxt"
+        android:layout_alignStart="@+id/membersTxt"
+        android:onClick="saveOnClick" />
 
 </RelativeLayout>

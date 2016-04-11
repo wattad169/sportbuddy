@@ -12,9 +12,10 @@ public class event implements Chargable {
     private final String date;
     private final int size;
     private final String location;
+    private final String id;
 
 
-    public event(EventType event_type, String name,String date,String location,int size, int ps, double price) {
+    public event(EventType event_type, String name,String date,String location,int size, int ps, double price,String id) {
         this.type = event_type;
         this.name = name;
         this.ps = ps;
@@ -22,6 +23,7 @@ public class event implements Chargable {
         this.date =date;
         this.size=size;
         this.location = location;
+        this.id=id;
     }
     public EventType getType() {
         return type;
@@ -40,6 +42,10 @@ public class event implements Chargable {
 
     public int getPs() {
         return ps;
+    }
+
+    public String getId(){
+        return id;
     }
 
     public int getKw() {

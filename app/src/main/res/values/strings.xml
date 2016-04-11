@@ -1,5 +1,5 @@
 <resources xmlns:xliff="http://schemas.android.com/tools">
-    <string name="app_name">sport buddy</string>
+    <string name="app_name"></string>
 
     <!-- Strings related to login -->
     <string name="skip">skip</string>
@@ -15,14 +15,14 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="title_activity_main">Your Upcomming Events</string>
+    <string name="title_activity_main"></string>
 
     <string name="default_text_ps">180PS</string>
     <string name="separator">/</string>
     <string name="default_text_kws">120kW</string>
 
     <string name="car_producer_image_content_description">Car Producer</string>
-    <string name="title_activity_create_event_sc">CreateEventSc</string>
+    <string name="title_activity_create_event_sc"></string>
     <string name="select_type">Type:</string>
     <string name="action_settings">Settings</string>
     <!-- This is the label underneath the icon for Calendar -->
@@ -763,8 +763,12 @@
     <string name="title_activity_event_info"></string>
     <string-array name="sport_types">
 
-        <item>Basketball</item>
-        <item>Football</item>
-        <item>Running</item>
+        <item>basketball</item>
+        <item>football</item>
+        <item>running</item>
+        <item>soccer</item>
+        <item>swimming</item>
+        <item>vollyball</item>
+        <item>cycling</item>
     </string-array>
 </resources>

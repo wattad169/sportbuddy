@@ -55,10 +55,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/type"
-        android:layout_toRightOf="@+id/type"
-        android:layout_alignRight="@+id/titlesc"
-        android:layout_alignEnd="@+id/titlesc"
-        android:layout_alignBottom="@+id/type">
+        android:layout_alignLeft="@+id/nameTxt"
+        android:layout_alignStart="@+id/nameTxt"
+        android:layout_above="@+id/date_title"
+        android:layout_alignRight="@+id/nameTxt"
+        android:layout_alignEnd="@+id/nameTxt">
 
 
     </Spinner>
@@ -138,8 +139,8 @@
         android:layout_alignBottom="@+id/loc_Title"
         android:layout_alignRight="@+id/nameTxt"
         android:layout_alignEnd="@+id/nameTxt"
-        android:layout_alignLeft="@+id/timeText"
-        android:layout_alignStart="@+id/timeText" />
+        android:layout_alignLeft="@+id/membersTxt"
+        android:layout_alignStart="@+id/membersTxt" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -157,13 +158,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="number"
-        android:ems="10"
         android:id="@+id/membersTxt"
         android:layout_alignBottom="@+id/Members_title"
-        android:layout_alignRight="@+id/timeText"
-        android:layout_alignEnd="@+id/timeText"
-        android:layout_alignLeft="@+id/locTxt"
-        android:layout_alignStart="@+id/locTxt" />
+        android:layout_alignLeft="@+id/DoCreate_btn"
+        android:layout_alignStart="@+id/DoCreate_btn"
+        android:layout_below="@+id/locTxt"
+        android:layout_alignRight="@+id/DoCreate_btn"
+        android:layout_alignEnd="@+id/DoCreate_btn" />
 
     <Button
         android:layout_width="wrap_content"
