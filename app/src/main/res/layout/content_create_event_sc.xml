@@ -32,11 +32,11 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Name:"
         android:id="@+id/name_title"
+        android:textSize="20dp"
+        android:layout_marginTop="35dp"
         android:layout_below="@+id/titlesc"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="45dp"
-        android:textSize="20dp" />
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:id="@+id/type"
@@ -44,11 +44,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="20dp"
+        android:layout_marginTop="28dp"
         android:layout_below="@+id/name_title"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="34dp"
-        android:textSize="20dp" />
+        android:layout_alignParentStart="true" />
 
     <Spinner
         android:id="@+id/spinner_type"
@@ -79,24 +79,103 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Date:"
         android:id="@+id/date_title"
+        android:textSize="20dp"
         android:layout_below="@+id/type"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="false"
-        android:layout_marginTop="43dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="28dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="none"
+        android:ems="10"
+        android:id="@+id/dateText"
+        android:hint = "date time"
+        android:onClick="onDateClick"
+        android:layout_alignBottom="@+id/date_title"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Time:"
+        android:id="@+id/time_title"
+        android:textSize="20dp"
+        android:layout_marginTop="28dp"
+        android:layout_below="@+id/date_title"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="time"
+        android:ems="10"
+        android:id="@+id/timeText"
+        android:hint = "time"
+        android:onClick="onTimeClick"
+        android:layout_alignBottom="@+id/time_title"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Location:"
+        android:id="@+id/loc_Title"
+        android:layout_below="@+id/time_title"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="28dp"
         android:textSize="20dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/locTxt"
+        android:layout_alignBottom="@+id/loc_Title"
+        android:layout_alignRight="@+id/nameTxt"
+        android:layout_alignEnd="@+id/nameTxt"
+        android:layout_alignLeft="@+id/timeText"
+        android:layout_alignStart="@+id/timeText" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Members:"
+        android:id="@+id/Members_title"
+        android:layout_below="@+id/loc_Title"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="28dp"
+        android:textSize="20dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/membersTxt"
+        android:layout_alignBottom="@+id/Members_title"
+        android:layout_alignRight="@+id/timeText"
+        android:layout_alignEnd="@+id/timeText"
+        android:layout_alignLeft="@+id/locTxt"
+        android:layout_alignStart="@+id/locTxt" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create Event"
-        android:id="@+id/create_event_btn"
-        android:textSize="30dp"
-        android:width="755dp"
-        android:background="#ffffff"
-        android:layout_gravity = "center"
-        android:onClick="createEventClick"
-        android:layout_marginTop="133dp"
-        android:layout_below="@+id/date_title"
-        android:layout_centerHorizontal="true" />
+        android:text="Create"
+        android:id="@+id/DoCreate_btn"
+        android:background="@drawable/button_rounded_corners"
+        android:singleLine="false"
+        android:layout_marginTop="29dp"
+        android:layout_below="@+id/membersTxt"
+        android:layout_centerHorizontal="true"
+        android:onClick="CreateOnClick" />
+
 
 </RelativeLayout>

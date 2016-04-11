@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private View mProgressView;
     private View mLoginFormView;
 
-
+    private String usrid;
     private getUserEventsTask myEventsTask = null;
     private static final String TAG = " MainActivity";
     @Override
@@ -47,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
 
     /* change buttons font text - lina */
 
+        Intent prev  = getIntent();
+        usrid = prev.getStringExtra(Constants.LOGGEDUSERID);
 
         Typeface myTypeFace = Typeface.createFromAsset(getAssets(),"fontBtn.ttf");
         Button joinBtn = (Button)findViewById(R.id.join_btn);
@@ -56,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         Button myGroupsBtn = (Button)findViewById(R.id.myGroups_btn);
         myGroupsBtn.setTypeface(myTypeFace);
         mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress_1);
+//        mProgressView = findViewById(R.id.login_progress_1);
     }
 
     @Override
@@ -70,7 +72,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void createClick(View v)
     {
-        startActivity(new Intent(getApplicationContext(), CreateEventSc.class) );
+
+        Intent intent = new Intent(getApplicationContext(), CreateEventSc.class);
+        intent.putExtra(Constants.LOGGEDUSERID,usrid);
+        startActivity(intent);
     }
 
     public void myGroupsClick(View v)

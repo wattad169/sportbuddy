@@ -760,6 +760,7 @@
 
     <!-- Do Not Translate.  Sender identity for global notification synchronization. -->
     <string name="notification_sender_id"></string>
+    <string name="title_activity_event_info"></string>
     <string-array name="sport_types">
 
         <item>Basketball</item>
