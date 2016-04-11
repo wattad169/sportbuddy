@@ -5,6 +5,8 @@ import com.example.mostafawattad.sportbuddy.client.NetworkUtilities;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -35,6 +37,7 @@ import java.util.List;
 
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,7 +54,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     /**
      * Id to identity READ_CONTACTS permission request.
      */
-    public final static String LOGGEDUSERID = "loggedUserId";
+
     private static final String TAG = "AuthenticatorActivity";
     private static final int REQUEST_READ_CONTACTS = 0;
 
@@ -206,10 +209,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            showProgress(true);
+//            showProgress(true);
             mEmail = email;
             mPassword = password;
-            mAuthTask = new UserLoginTask();
+            mAuthTask = new UserLoginTask(this);
             mAuthTask.execute((Void) null);
         }
     }
@@ -390,7 +393,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      *
      * @param authToken the authentication token returned by the server, or NULL if
      *            authentication failed.
-     */
+//     */
 //    public void onAuthenticationResult(String authToken) {
 //        boolean success = ((authToken != null) && (authToken.length() > 0));
 //        Log.i(TAG, "onAuthenticationResult(" + success + ")");
@@ -424,7 +427,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 //        // Hide the progress dialog
 //        hideProgress();
 //    }
-
+//
 
     /**
      * Represents an asynchronous login/registration task used to doPost
@@ -432,7 +435,22 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     public class UserLoginTask extends AsyncTask<Void, Void, String> {
 
+        private Context context;
+        public UserLoginTask(LoginActivity activity) {
+            this.activity = activity;
+            context = activity;
+            dialog = new ProgressDialog(context);
+        }
 
+        /** progress dialog to show user that the backup is processing. */
+        private ProgressDialog dialog;
+        /** application context. */
+        private LoginActivity activity;
+
+        protected void onPreExecute() {
+            this.dialog.setMessage("Authenticating..");
+            this.dialog.show();
+        }
         @Override
         protected String doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
@@ -450,59 +468,68 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                return NetworkUtilities.doPost(cred, NetworkUtilities.BASE_URL + "/login/");
+                String responseString = NetworkUtilities.doPost(cred, NetworkUtilities.BASE_URL + "/login/");
+                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                JSONObject myObject = null;
+                String responseStatus = null;
+                try {
+                    myObject = new JSONObject(responseString);
+                    responseStatus = myObject.getString(Constants.RESPONSE_STATUS);
+                } catch (JSONException e) {
+                    Log.i(TAG, e.toString());
+                    e.printStackTrace();
+                }
+
+                if(myObject!=null && responseStatus!=null){
+                    if(responseStatus.equals(Constants.RESPONSE_OK.toString())){
+                        try {
+                            String userId = myObject.getString(Constants.RESPONSE_MESSAGE);
+                            intent.putExtra(Constants.LOGGEDUSERID, userId);
+
+                            startActivity(intent);
+                            Log.i(TAG, userId);
+
+                        } catch (JSONException e) {
+                            Log.i(TAG, e.toString());
+                            e.printStackTrace();
+                        }
+                    }
+                    else{
+                        //User or Password doesn't match .. Forgot password?
+//                    mAuthTask = null;
+//                    showProgress(false);
+                        mAuthTask = null;
+                        dialog.cancel();
+                        Toast.makeText(context, "Failed to login!", Toast.LENGTH_LONG).show();
+
+                        Log.i(TAG, "User or Password doesn't match .. Forgot password");
+                    }
+
+                }
+                else{
+                    //Send HttpBadRequest to the server
+                }
+
             } catch (Exception ex) {
                 Log.e(TAG, "UserLoginTaswattadk.doInBackground: failed to doPost");
                 Log.i(TAG, ex.toString());
                 return null;
             }
+            return null;
         }
 
 
         @Override
         protected void onPostExecute(final String responseString) {
 //            onAuthenticationResult(authToken);
-            Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-            JSONObject myObject = null;
-            String responseStatus = null;
-            try {
-                myObject = new JSONObject(responseString);
-                responseStatus = myObject.getString(Constants.RESPONSE_STATUS);
-            } catch (JSONException e) {
-                Log.i(TAG, e.toString());
-                e.printStackTrace();
-            }
-
-            if(myObject!=null && responseStatus!=null){
-                if(responseStatus.equals(Constants.RESPONSE_OK.toString())){
-                    try {
-                        String userId = myObject.getString(Constants.RESPONSE_MESSAGE);
-                        intent.putExtra(LOGGEDUSERID,userId);
-                        startActivity(intent);
-                        Log.i(TAG, userId);
-
-                    } catch (JSONException e) {
-                        Log.i(TAG, e.toString());
-                        e.printStackTrace();
-                    }
-                }
-                else{
-                    //User or Password doesn't match .. Forgot password?
-                    Log.i(TAG, "User or Password doesn't match .. Forgot password");
-                }
-
-            }
-            else{
-                //Send HttpBadRequest to the server
-            }
-
+            dialog.cancel();
 
         }
 
         @Override
         protected void onCancelled() {
             mAuthTask = null;
-            showProgress(false);
+            dialog.cancel();;
         }
     }
 }

@@ -85,4 +85,18 @@
         android:layout_marginTop="43dp"
         android:textSize="20dp" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create Event"
+        android:id="@+id/create_event_btn"
+        android:textSize="30dp"
+        android:width="755dp"
+        android:background="#ffffff"
+        android:layout_gravity = "center"
+        android:onClick="createEventClick"
+        android:layout_marginTop="133dp"
+        android:layout_below="@+id/date_title"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

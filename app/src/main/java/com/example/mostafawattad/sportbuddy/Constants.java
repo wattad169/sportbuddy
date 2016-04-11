@@ -58,4 +58,9 @@ public class Constants {
         put("tenis", R.mipmap.tenis);
     }};
 
+    public static final String LOGGEDUSERID = "loggedUserId";
+    public static final int myEventsMode = 1;
+    public static final int allEventsMode = 2;
+    public static final String eventsMode = "eventMode";
+
 }

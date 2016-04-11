@@ -1,5 +1,6 @@
 package com.example.mostafawattad.sportbuddy;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -18,7 +19,7 @@ public class CreateEventSc extends AppCompatActivity {
 
     Spinner spn;
     ArrayAdapter<CharSequence>adapter;
-
+    private Typeface myTypeFace;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +62,10 @@ public class CreateEventSc extends AppCompatActivity {
         TextView dateView = (TextView)findViewById(R.id.date_title);
         dateView.setTypeface(myTypeFace);
 
+        Button createBtn = (Button)findViewById(R.id.create_event_btn);
+        createBtn.setTypeface(myTypeFace);}
+
 
 
     }
 
-}

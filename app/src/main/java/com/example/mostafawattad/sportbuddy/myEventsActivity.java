@@ -7,6 +7,7 @@ package com.example.mostafawattad.sportbuddy;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -30,6 +31,10 @@ import org.json.JSONObject;
 public class myEventsActivity extends AppCompatActivity {
     private static final String TAG = "myEventsActivity: ";
     private getUserEventsTask myEventsTask = null;
+    private int receivedEventsMode ;
+    private String user_token;
+    private String user_id;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +44,10 @@ public class myEventsActivity extends AppCompatActivity {
         if (toolbar != null) {
             setSupportActionBar(toolbar);
         }
+        Intent prev  = getIntent();
+        receivedEventsMode = prev.getIntExtra(Constants.eventsMode,1);
+        user_token = prev.getStringExtra(Constants.LOGGEDUSERID);
+        user_id    = user_token;
         myEventsTask = new getUserEventsTask(this);
         myEventsTask.execute((Void) null);
 
@@ -63,45 +72,6 @@ public class myEventsActivity extends AppCompatActivity {
             events.add(current_event);
             }
 
-//        final EventType audi = new EventType(R.mipmap.swimming, "football");
-//        final event audiA1 = new event(audi, "A1", 150, 25000);
-//        final event audiA3 = new event(audi, "A3", 120, 35000);
-//        final event audiA4 = new event(audi, "A4", 210, 42000);
-//        final event audiA5 = new event(audi, "S5", 333, 60000);
-//        final event audiA6 = new event(audi, "A6", 250, 55000);
-//        final event audiA7 = new event(audi, "A7", 420, 87000);
-//        final event audiA8 = new event(audi, "A8", 320, 110000);
-//
-//        final EventType bmw = new EventType(R.mipmap.cycling, "soccer");
-//        final event bmw1 = new event(bmw, "1er", 170, 25000);
-//        final event bmw3 = new event(bmw, "3er", 230, 42000);
-//        final event bmwX3 = new event(bmw, "X3", 230, 45000);
-//        final event bmw4 = new event(bmw, "4er", 250, 39000);
-//        final event bmwM4 = new event(bmw, "M4", 350, 60000);
-//        final event bmw5 = new event(bmw, "5er", 230, 46000);
-//
-//        final EventType porsche = new EventType(R.mipmap.football, "swimming");
-//        final event porsche911 = new event(porsche, "911", 280, 45000);
-//        final event porscheCayman = new event(porsche, "Cayman", 330, 52000);
-//        final event porscheCaymanGT4 = new event(porsche, "Cayman GT4", 385, 86000);
-//
-//        final List<event> cars = new ArrayList<>();
-//        cars.add(audiA3);
-//        cars.add(audiA1);
-//        cars.add(porscheCayman);
-//        cars.add(audiA7);
-//        cars.add(audiA8);
-//        cars.add(audiA4);
-//        cars.add(bmwX3);
-//        cars.add(porsche911);
-//        cars.add(bmw1);
-//        cars.add(audiA6);
-//        cars.add(audiA5);
-//        cars.add(bmwM4);
-//        cars.add(bmw5);
-//        cars.add(porscheCaymanGT4);
-//        cars.add(bmw3);
-//        cars.add(bmw4);
 
         return events;
     }
@@ -140,9 +110,7 @@ public class myEventsActivity extends AppCompatActivity {
         protected String doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
             try {
-                // Simulate network access.
-                String user_token = "5642554087309312";
-                String user_id    = user_token;
+
                 Log.i(TAG, "");
                 JSONObject cred = new JSONObject();
                 try {
@@ -155,7 +123,14 @@ public class myEventsActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                return NetworkUtilities.doPost(cred, NetworkUtilities.BASE_URL + "/get_all_events/");
+                if(receivedEventsMode == Constants.myEventsMode){
+
+                    return NetworkUtilities.doPost(cred, NetworkUtilities.BASE_URL + "/get_events_by_user/");
+                }
+                else{
+                    return NetworkUtilities.doPost(cred, NetworkUtilities.BASE_URL + "/get_all_events/");
+                }
+
             } catch (Exception ex) {
                 Log.e(TAG, "getUserEvents.doInBackground: failed to doPost");
                 Log.i(TAG, ex.toString());
@@ -166,16 +141,6 @@ public class myEventsActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(final String responseString) {
-//            onAuthenticationResult(authToken);
-
-
-//
-//            MessageListAdapter adapter = new MessageListAdapter(activity, titles);
-//            setListAdapter(adapter);
-//            adapter.notifyDataSetChanged();
-
-
-
 
             JSONObject myObject = null;
             String responseStatus = null;

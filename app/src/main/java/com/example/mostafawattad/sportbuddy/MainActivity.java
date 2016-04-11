@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private View mProgressView;
     private View mLoginFormView;
 
+
     private getUserEventsTask myEventsTask = null;
     private static final String TAG = " MainActivity";
     @Override
@@ -45,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
     /* change buttons font text - lina */
+
+
         Typeface myTypeFace = Typeface.createFromAsset(getAssets(),"fontBtn.ttf");
         Button joinBtn = (Button)findViewById(R.id.join_btn);
         joinBtn.setTypeface(myTypeFace);
@@ -56,13 +59,13 @@ public class MainActivity extends AppCompatActivity {
         mProgressView = findViewById(R.id.login_progress_1);
     }
 
-
+    @Override
+    public void onBackPressed() {
+    }
     public void joinClick(View v)
     {
-        Uri uri = Uri.parse("http://www.google.com.kh");
-        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-
-        startActivity(intent);
+        myEventsTask = new getUserEventsTask(this,Constants.allEventsMode);
+        myEventsTask.execute((Void) null);
     }
 
     public void createClick(View v)
@@ -74,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     {
 //        Uri uri = Uri.parse("http://www.walla.com");
 //        showProgress(true);
-        myEventsTask = new getUserEventsTask(this);
+        myEventsTask = new getUserEventsTask(this,Constants.myEventsMode);
         myEventsTask.execute((Void) null);
 
 
@@ -119,16 +122,18 @@ public class MainActivity extends AppCompatActivity {
 
 //        private Context context;
         private Context context;
-        public getUserEventsTask(MainActivity activity) {
+        public getUserEventsTask(MainActivity activity,int eventsMode) {
             this.activity = activity;
             context = activity;
             dialog = new ProgressDialog(context);
+            this.eventsMode = eventsMode;
         }
 
         /** progress dialog to show user that the backup is processing. */
         private ProgressDialog dialog;
         /** application context. */
         private MainActivity activity;
+        private int eventsMode;
 
         protected void onPreExecute() {
             this.dialog.setMessage("Getting your events..");
@@ -138,8 +143,21 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
-            Intent intent = new Intent(getApplicationContext(),myEventsActivity.class);
-            startActivity(intent);
+            Intent nextIntent = null;
+            Intent prev  = getIntent();
+            String usrid = prev.getStringExtra(Constants.LOGGEDUSERID);
+            if(this.eventsMode == Constants.myEventsMode){
+
+                nextIntent = new Intent(getApplicationContext(),myEventsActivity.class);
+                nextIntent.putExtra(Constants.eventsMode,Constants.myEventsMode);
+            }
+            else{
+                nextIntent = new Intent(getApplicationContext(),myEventsActivity.class);
+                nextIntent.putExtra(Constants.eventsMode,Constants.allEventsMode);
+            }
+
+            nextIntent.putExtra(Constants.LOGGEDUSERID, usrid);
+            startActivity(nextIntent);
             return null;
         }
 
